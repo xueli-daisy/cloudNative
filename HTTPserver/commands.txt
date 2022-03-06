@@ -1,0 +1,24 @@
+#build a httpserver image
+sudo docker build HTTPserver -t xueli17/httpserver:latest
+#push to docker respository
+sudo docker push xueli17/httpserver:latest
+#run docker image
+sudo docker run -p 8080:8080 xueli17/httpserver:latest
+
+sudo docker ps
+[sudo] password for palden:
+CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                    NAMES
+36006b3001eb        xueli17/httpserver:latest       "/HTTPserver"            33 minutes ago      Up 33 minutes       0.0.0.0:8080->8080/tcp   unruffled_jepsen
+
+sudo docker inspect --format "{{ .State.Pid }}" 36006b3001eb
+1147
+
+sudo nsenter -t 1147 -n ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+962: eth0@if963: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:11:00:06 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.6/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
