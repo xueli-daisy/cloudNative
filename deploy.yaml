@@ -5,7 +5,7 @@ metadata:
     app: httpserver
   name: httpserver
 spec:
-  prgressDeadlineSeconds: 300
+        #  prgressDeadlineSeconds: 300
   replicas: 3
   revisionHistoryLimit: 5
   selector:
@@ -44,3 +44,30 @@ spec:
               path: /healthz
               port: 8080
               scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+            requests:
+              cpu: 20m
+              memory: 20Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      terminationGracePeriodSeconds: 30
+#Commands and output
+#kubectl create namespace cloudnative
+#namespace/cloudnative created
+
+#kubectl create -f delployment.yaml -n cloudnative
+#deployment.apps/httpserver created
+
+#kubectl get pods -n cloudnative
+#NAME                          READY   STATUS    RESTARTS   AGE
+#httpserver-64b7fdf7d4-5pc67   1/1     Running   0          44s
+#httpserver-64b7fdf7d4-fr775   1/1     Running   0          44s
+#httpserver-64b7fdf7d4-jmv77   1/1     Running   0          44s
+
