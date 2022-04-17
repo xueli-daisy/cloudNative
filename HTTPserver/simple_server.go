@@ -29,6 +29,7 @@ func HelloHandler(w http.ResponseWriter, r *http.Request) {
         }
 //      fmt.Fprintf(w, "Host = %q\n", r.Host)
         fmt.Fprintf(w, "OS_VERSION = %q\n", os.Getenv("VERSION"))
+        fmt.Fprintf(w, "<h1>Welcome to cloud native</h1>")
 //      fmt.Fprintf(w, "RemoteAddr = %q\n", r.RemoteAddr)
 //      fmt.Fprintf(w, "StatusCode = %q\n", w.StatusCode)
 //      fmt.Fprintf(w, "ClientAddr = %q\n", r.ClientAddr)
