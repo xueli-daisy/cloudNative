@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+  name: httpserver-ssl
+spec:
+  ingressClassName: nginx
+  rules:
+   - host: httpserver-ssl.utsasrg5.utsa.edu
+     http:
+       paths:
+         - backend:
+             service:
+               name: httpserver
+               port:
+                 number: 80
+           path: /
+           pathType: Prefix
+  tls:
+    - hosts:
+        -  httpserver-ssl.utsasrg5.utsa.edu
+      secretName: httpserver-tls
+
+#kubectl create -f ingress-https.yaml -n cloudnative
+#ingress.networking.k8s.io/httpserver-ssl created
+
+#kubectl get ingress -n cloudnative
+#NAME                        CLASS    HOSTS                              ADDRESS   PORTS     AGE
+#cm-acme-http-solver-sm2c5   <none>   httpserver-ssl.utsasrg5.utsa.edu             80        97s
+#httpserver-80               nginx    httpserver-80.utsasrg5.utsa.edu              80        138m
+#httpserver-ssl              nginx    httpserver-ssl.utsasrg5.utsa.edu             80, 443   99s
+
+#kubectl get cert -n cloudnative
+#NAME             READY   SECRET           AGE
+#httpserver-tls   False   httpserver-tls   2m54s
+
+#kubectl get CertificateRequest -n cloudnative
+#NAME                   APPROVED   DENIED   READY   ISSUER             REQUESTOR                                         AGE
+#httpserver-tls-79bbg   True                False   letsencrypt-prod   system:serviceaccount:cert-manager:cert-manager   4m42s
+
+#kubectl describe CertificateRequest httpserver-tls-79bbg -n cloudnative
+# Normal  OrderPending     6m9s  cert-manager-certificaterequests-issuer-acme  Waiting on certificate issuance from order cloudnative/httpserver-tls-79bbg-2646032459: ""
+
