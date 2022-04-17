@@ -1,0 +1,54 @@
+#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+#helm repo update
+#helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress
+#kubectl get pod -n ingress
+#NAME                                        READY   STATUS    RESTARTS   AGE
+#ingress-nginx-controller-6f997cb8c9-s5k68   1/1     Running   0          116s
+
+kubectl logs ingress-nginx-controller-6f997cb8c9-s5k68 -n ingress
+#-------------------------------------------------------------------------------
+#NGINX Ingress controller
+#  Release:       v1.1.3
+#  Build:         9d3a285f19a704524439c75b947e2189406565ab
+#  Repository:    https://github.com/kubernetes/ingress-nginx
+#  nginx version: nginx/1.19.10
+
+#-------------------------------------------------------------------------------
+
+#W0417 17:06:34.573190       6 client_config.go:615] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+#I0417 17:06:34.573382       6 main.go:223] "Creating API client" host="https://10.96.0.1:443"
+#I0417 17:06:34.589847       6 main.go:267] "Running in Kubernetes cluster" major="1" minor="20" git="v1.20.15" state="clean" commit="8f1e5bf0b9729a899b8df86249b56e2c74aebc55" platform="linux/amd64"
+#I0417 17:06:34.912305       6 main.go:104] "SSL fake certificate created" file="/etc/ingress-controller/ssl/default-fake-certificate.pem"
+#I0417 17:06:34.940873       6 ssl.go:531] "loading tls certificate" path="/usr/local/certificates/cert" key="/usr/local/certificates/key"
+#I0417 17:06:34.958801       6 nginx.go:255] "Starting NGINX Ingress controller"
+#I0417 17:06:34.964943       6 event.go:282] Event(v1.ObjectReference{Kind:"ConfigMap", Namespace:"ingress", Name:"ingress-nginx-controller", UID:"4bc43269-7455-4299-95e8-92c9280206f7", APIVersion:"v1", ResourceVersion:"5189969", FieldPath:""}): type: 'Normal' reason: 'CREATE' ConfigMap ingress/ingress-nginx-controller
+#I0417 17:06:36.160386       6 nginx.go:298] "Starting NGINX process"
+#I0417 17:06:36.160438       6 leaderelection.go:248] attempting to acquire leader lease ingress/ingress-controller-leader...
+#I0417 17:06:36.160981       6 nginx.go:318] "Starting validation webhook" address=":8443" certPath="/usr/local/certificates/cert" keyPath="/usr/local/certificates/key"
+#I0417 17:06:36.161246       6 controller.go:159] "Configuration changes detected, backend reload required"
+#I0417 17:06:36.171091       6 leaderelection.go:258] successfully acquired lease ingress/ingress-controller-leader
+#I0417 17:06:36.171188       6 status.go:84] "New leader elected" identity="ingress-nginx-controller-6f997cb8c9-s5k68"
+#I0417 17:06:36.249628       6 controller.go:176] "Backend successfully reloaded"
+#I0417 17:06:36.249738       6 controller.go:187] "Initial sync, sleeping for 1 second"
+#I0417 17:06:36.249832       6 event.go:282] Event(v1.ObjectReference{Kind:"Pod", Namespace:"ingress", Name:"ingress-nginx-controller-6f997cb8c9-s5k68", UID:"7bbb0d4a-9065-4cec-808b-302ae7fbe3c4", APIVersion:"v1", ResourceVersion:"5190004", FieldPath:""}): type: 'Normal' reason: 'RELOAD' NGINX reload triggered due to a change in configuration
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpserver-80
+spec:
+  ingressClassName: nginx
+  rules:
+   - host: httpserver-80.utsasrg5.utsa.edu
+     http:
+       paths:
+         - backend:
+             service:
+               name: httpserver
+               port:
+                 number: 80
+           path: /
+           pathType: Prefix
+
+#kubectl create -f ingress-http.yaml -n cloudnative
+#ingress.networking.k8s.io/httpserver-80 created
