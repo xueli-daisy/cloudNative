@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  name: httpserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: httpserver
+  type: ClusterIP
+  
+# kubectl create -f svc.yaml -n cloudnative
+
+# kubectl get svc -n cloudnative
+# NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+# httpserver   ClusterIP   10.97.78.122   <none>        80/TCP    9m20s
+
+# kubectl get ep -n cloudnative
+#NAME         ENDPOINTS                                      AGE
+#httpserver   10.32.0.6:8080,10.32.0.8:8080,10.32.0.9:8080   9m28s
+
+# curl 10.97.78.122
+# Header field "User-Agent", Value [%!a(string=curl/7.71.1)]
+# Header field "Accept", Value [%!a(string=*/*)]
+# OS_VERSION = ""
+# <h1>Welcome to cloud native</h1>
