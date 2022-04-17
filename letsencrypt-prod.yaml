@@ -1,0 +1,38 @@
+#helm repo add jetstack https://charts.jetstack.io
+#helm repo update
+
+#kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.0/cert-manager.crds.yaml
+
+#helm install \
+#>   cert-manager jetstack/cert-manager \
+#>   --namespace cert-manager \
+#>   --create-namespace \
+#>   --version v1.8.0 \
+#> ;
+
+#kubectl get pod -n cert-manager
+#NAME                                      READY   STATUS    RESTARTS   AGE
+#cert-manager-6bbf595697-65lrv             1/1     Running   0          3m22s
+#cert-manager-cainjector-6bc9d758b-stghg   1/1     Running   0          3m22s
+#cert-manager-webhook-d98678bf5-qf4kc      1/1     Running   0          3m22s
+
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+  email: hey.luoluo@gmail.com
+  preferredChain: ""
+  privateKeySecretRef:
+    name: letsencrypt-prod
+  server: https://acme-v02.api.letsencrypt.org/directory
+  solvers:
+  - http01:
+      ingress:
+      class: nginx
+
+#kubectl create -f letsencrypt-prod.yaml -n cloudnative
+#kubectl get issuer -n cloudnative
+#NAME               READY   AGE
+#letsencrypt-prod   True    4m47s
