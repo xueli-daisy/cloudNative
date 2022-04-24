@@ -5,12 +5,18 @@ import (
         "log"
         "net/http"
         "os"
+        "github.com/prometheus/client_golang/prometheus/promhttp"
+        "github.com/xueli-daisy/cloudNative/HTTPserver/metrics"
+        "time"
+        "math/rand"
 )
 
 func main() {
         //The HandleFunc registers the handler function for thegiven URL pattern
         http.HandleFunc("/", HelloHandler)
         http.HandleFunc("/healthz", healthz)
+        http.HandleFunc("/images", images)
+        http.Handle("/metrics", promhttp.Handler())
         fmt.Print("Server started at port 8080")
         //The ListenAndServe listens on the TCP network addressand then handles requests on incoming connections.
         log.Fatal(http.ListenAndServe(":8080", nil))
@@ -35,4 +41,13 @@ func HelloHandler(w http.ResponseWriter, r *http.Request) {
 //      fmt.Fprintf(w, "ClientAddr = %q\n", r.ClientAddr)
 
 }
+
+func images(w http.ResponseWriter, r *http.Request) {
+        timer := metrics.NewTimer()
+        defer timer.ObserveTotal()
+        randInt := rand.Intn(2000)
+        time.Sleep(time.Millisecond * time.Duration(randInt))
+        w.Write([]byte(fmt.Sprintf("<h1>%d<h1>", randInt)))
+}
+
 
