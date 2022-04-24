@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+        metrics.Register()
         //The HandleFunc registers the handler function for thegiven URL pattern
         http.HandleFunc("/", HelloHandler)
         http.HandleFunc("/healthz", healthz)
