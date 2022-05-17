@@ -7,7 +7,7 @@ spec:
     istio: ingressgateway
   servers:
     - hosts:
-        - httpserver.utsasrg5.utsa.edu
+        - '*'
       port:
         name: httpserver
         number: 80
