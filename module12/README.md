@@ -31,6 +31,23 @@ default           Active   78d
 httpserver        Active   3m49s   enabled
 
 3. Install gateway
+kubectl apply -f gateway.yaml -n httpserver                                                        
+gateway.networking.istio.io/httpserver created
+
+kubectl get gw -n httpserver
+NAME         AGE
+httpserver   3m47s
+
+4. Install virtualService
+kubectl apply -f virtualservice.yaml -n httpserver
+virtualservice.networking.istio.io/httpserver created
+
+kubectl get vs -n httpserver
+NAME         GATEWAYS         HOSTS   AGE
+httpserver   ["httpserver"]   ["*"]   43s
+
+
+
 
 
 
