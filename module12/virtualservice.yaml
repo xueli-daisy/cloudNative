@@ -12,6 +12,7 @@ spec:
         - port: 80
       route:
         - destination:
+        #svc.namespace..svc.cluster.local
             host: httpserver.httpserver.svc.cluster.local
             port:
               number: 80
