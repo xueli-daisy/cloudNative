@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: httpserver
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - httpserver.utsasrg5.utsa.edu
+      port:
+        name: httpserver
+        number: 80
+        protocol: HTTP
