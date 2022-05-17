@@ -70,8 +70,9 @@ httpserver   ClusterIP   10.107.165.24   <none>        80/TCP    22m
 curl 10.107.165.24/healthz
 working
 ```
-7. kubectl get svc -n istio-system
+7. 
 ```
+kubectl get svc -n istio-system
 NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                      AGE
 istio-egressgateway    ClusterIP      10.98.193.125   <none>        80/TCP,443/TCP                                                               45h
 istio-ingressgateway   LoadBalancer   10.109.60.29    <pending>     15021:32532/TCP,80:30427/TCP,443:30777/TCP,31400:30609/TCP,15443:32442/TCP   45h
